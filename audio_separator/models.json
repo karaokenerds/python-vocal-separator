@@ -82,6 +82,27 @@
         },
         "Roformer Model: MelBand Roformer | Bleed Suppressor V1 by unwa-97chris": {
             "mel_band_roformer_bleed_suppressor_v1.ckpt": "config_mel_band_roformer_bleed_suppressor_v1.yaml"
+        },
+        "Roformer Model: BS Roformer | Inst EXP Value Residual by unwa": {
+            "BS_Inst_EXP_VRL.ckpt": "BS_Inst_EXP_VRL.yaml"
+        },
+        "Roformer Model: MelBand Roformer Kim | FT2 by unwa": {
+            "kimmel_unwa_ft2.ckpt": "config_mel_band_roformer_kim_ft_unwa.yaml"
+        },
+        "Roformer Model: MelBand Roformer | De-Reverb Big by Sucial": {
+            "de_big_reverb_mbr_ep_362.ckpt": "config_dereverb_echo_mbr_v2.yaml"
+        },
+        "Roformer Model: MelBand Roformer | De-Reverb Super Big by Sucial": {
+            "de_super_big_reverb_mbr_ep_346.ckpt": "config_dereverb_echo_mbr_v2.yaml"
+        },
+        "Roformer Model: MelBand Roformer | De-Reverb-Echo Fused by Sucial": {
+            "dereverb_echo_mbr_fused_0.5_v2_0.25_big_0.25_super.ckpt": "config_dereverb_echo_mbr_v2.yaml"
+        },
+        "Roformer Model: MelBand Roformer | Vocals by Becruily": {
+            "mel_band_roformer_vocals_becruily.ckpt": "config_vocals_becruily.yaml"
+        },
+        "Roformer Model: MelBand Roformer | Instrumental by Becruily": {
+            "mel_band_roformer_instrumental_becruily.ckpt": "config_instrumental_becruily.yaml"
         }
     }
 }
