@@ -5,7 +5,7 @@
 [![Docker pulls](https://img.shields.io/docker/pulls/beveradb/audio-separator.svg)](https://hub.docker.com/r/beveradb/audio-separator/tags)
 [![codecov](https://codecov.io/gh/karaokenerds/python-audio-separator/graph/badge.svg?token=N7YK4ET5JP)](https://codecov.io/gh/karaokenerds/python-audio-separator)
 [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/blane187gt/audio-separator-colab-work/blob/main/audio_separator_Colab_work.ipynb)
-[![Open In Huggingface](https://huggingface.co/datasets/huggingface/badges/resolve/main/open-in-hf-spaces-md.svg)](https://huggingface.co/spaces/theneos/audio-separator)
+[![Open In Huggingface](https://huggingface.co/datasets/huggingface/badges/resolve/main/open-in-hf-spaces-sm.svg)](https://huggingface.co/spaces/Politrees/Audio-Separator)
 
 **Summary:** Easy to use audio stem separation from the command line or as a dependency in your own Python project, using the amazing MDX-Net, VR Arch, Demucs and MDXC models available in UVR by @Anjok07 & @aufr33.
 
@@ -247,7 +247,7 @@ usage: audio-separator [-h] [-v] [-d] [-e] [-l] [--log_level LOG_LEVEL] [--list_
 Separate audio file into different stems.
 
 positional arguments:
-  audio_files                                            The audio file paths to separate, in any common format.
+  audio_files                                            The audio file paths or directory to separate, in any common format.
 
 options:
   -h, --help                                             show this help message and exit
@@ -338,25 +338,36 @@ You only need to load a model when choosing or changing models. See example belo
 ```python
 from audio_separator.separator import Separator
 
-# Initialize the Separator with other configuration properties, below
+# Initialize the Separator class (with optional configuration properties, below)
 separator = Separator()
 
 # Load a model
 separator.load_model(model_filename='UVR-MDX-NET-Inst_HQ_3.onnx')
 
 # Separate multiple audio files without reloading the model
-output_file_paths_1 = separator.separate('audio1.wav')
-output_file_paths_2 = separator.separate('audio2.wav')
-output_file_paths_3 = separator.separate('audio3.wav')
+output_files = separator.separate(['audio1.wav', 'audio2.wav', 'audio3.wav'])
 
 # Load a different model
 separator.load_model(model_filename='UVR_MDXNET_KARA_2.onnx')
 
 # Separate the same files with the new model
-output_file_paths_4 = separator.separate('audio1.wav')
-output_file_paths_5 = separator.separate('audio2.wav')
-output_file_paths_6 = separator.separate('audio3.wav')
+output_files = separator.separate(['audio1.wav', 'audio2.wav', 'audio3.wav'])
 ```
+
+You can also specify the path to a folder containing audio files instead of listing the full paths to each of them:
+```python
+from audio_separator.separator import Separator
+
+# Initialize the Separator class (with optional configuration properties, below)
+separator = Separator()
+
+# Load a model
+separator.load_model(model_filename='UVR-MDX-NET-Inst_HQ_3.onnx')
+
+# Separate all audio files located in a folder
+output_files = separator.separate('path/to/audio_directory')
+```
+
 
 #### Renaming Stems
 
@@ -388,27 +399,18 @@ You can also rename specific stems:
   output_files = separator.separate('audio1.wav', output_names)
   ```
   > The output files will be named: `audio1_(Vocals)_model_mel_band_roformer_ep_3005_sdr_11.wav` and `instrumental_output.wav`
-- List of stems for Demucs models:
-  - htdemucs_6s.yaml
-    ```python
-    output_names = {
-        "Vocals": "vocals_output",
-        "Drums": "drums_output",
-        "Bass": "bass_output",
-        "Other": "other_output",
-        "Guitar": "guitar_output",
-        "Piano": "piano_output",
-    }
-    ```
-  - Other Demucs models
-    ```python
-    output_names = {
-        "Vocals": "vocals_output",
-        "Drums": "drums_output",
-        "Bass": "bass_output",
-        "Other": "other_output",
-    }
-    ```
+- List of all available stems (you can use the entire list for each architecture; names will automatically adjust to the files):
+  ```python
+  output_names = {
+      "Vocals": "vocals_output",
+      "Instrumental": "instrumental_output",
+      "Drums": "drums_output",
+      "Bass": "bass_output",
+      "Guitar": "guitar_output",
+      "Piano": "piano_output",
+      "Other": "other_output",
+  }
+  ```
 
 ## Parameters for the Separator class
 

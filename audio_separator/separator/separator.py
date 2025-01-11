@@ -726,30 +726,80 @@ class Separator:
 
     def separate(self, audio_file_path, custom_output_names=None):
         """
-        Separates the audio file into different stems (e.g., vocals, instruments) using the loaded model.
+        Separates the audio file(s) into different stems (e.g., vocals, instruments) using the loaded model.
 
-        This method takes the path to an audio file, processes it through the loaded separation model, and returns
-        the paths to the output files containing the separated audio stems. It handles the entire flow from loading
-        the audio, running the separation, clearing up resources, and logging the process.
+        This method takes the path to an audio file or a directory containing audio files, processes them through
+        the loaded separation model, and returns the paths to the output files containing the separated audio stems.
+        It handles the entire flow from loading the audio, running the separation, clearing up resources, and logging the process.
 
         Parameters:
-        - audio_file_path (str): The path to the audio file to be separated.
+        - audio_file_path (str or list): The path to the audio file or directory, or a list of paths.
         - custom_output_names (dict, optional): Custom names for the output files. Defaults to None.
 
         Returns:
         - output_files (list of str): A list containing the paths to the separated audio stem files.
         """
+        # Check if the model and device are properly initialized
         if not (self.torch_device and self.model_instance):
             raise ValueError("Initialization failed or model not loaded. Please load a model before attempting to separate.")
 
-        # Starting the separation process
+        # If audio_file_path is a string, convert it to a list for uniform processing
+        if isinstance(audio_file_path, str):
+            audio_file_path = [audio_file_path]
+
+        # Initialize a list to store paths of all output files
+        output_files = []
+
+        # Process each path in the list
+        for path in audio_file_path:
+            if os.path.isdir(path):
+                # If the path is a directory, recursively search for all audio files
+                for root, dirs, files in os.walk(path):
+                    for file in files:
+                        # Check the file extension to ensure it's an audio file
+                        if file.endswith(('.wav', '.mp3', '.flac', '.ogg', '.m4a')):  # Add other formats if needed
+                            full_path = os.path.join(root, file)
+                            self.logger.info(f"Processing file: {full_path}")
+                            try:
+                                # Perform separation for each file
+                                files_output = self._separate_file(full_path, custom_output_names)
+                                output_files.extend(files_output)
+                            except Exception as e:
+                                self.logger.error(f"Failed to process file {full_path}: {e}")
+            else:
+                # If the path is a file, process it directly
+                self.logger.info(f"Processing file: {path}")
+                try:
+                    files_output = self._separate_file(path, custom_output_names)
+                    output_files.extend(files_output)
+                except Exception as e:
+                    self.logger.error(f"Failed to process file {path}: {e}")
+
+        return output_files
+
+    def _separate_file(self, audio_file_path, custom_output_names=None):
+        """
+        Internal method to handle separation for a single audio file.
+
+        This method performs the actual separation process for a single audio file. It logs the start and end of the process,
+        handles autocast if enabled, and ensures GPU cache is cleared after processing.
+
+        Parameters:
+        - audio_file_path (str): The path to the audio file.
+        - custom_output_names (dict, optional): Custom names for the output files. Defaults to None.
+
+        Returns:
+        - output_files (list of str): A list containing the paths to the separated audio stem files.
+        """
+        # Log the start of the separation process
         self.logger.info(f"Starting separation process for audio_file_path: {audio_file_path}")
         separate_start_time = time.perf_counter()
 
+        # Log normalization and amplification thresholds
         self.logger.debug(f"Normalization threshold set to {self.normalization_threshold}, waveform will be lowered to this max amplitude to avoid clipping.")
         self.logger.debug(f"Amplification threshold set to {self.amplification_threshold}, waveform will be scaled up to this max amplitude if below it.")
 
-        # Run separation method for the loaded model with autocast enabled if supported by the device.
+        # Run separation method for the loaded model with autocast enabled if supported by the device
         output_files = None
         if self.use_autocast and autocast_mode.is_autocast_available(self.torch_device.type):
             self.logger.debug("Autocast available.")
@@ -762,7 +812,7 @@ class Separator:
         # Clear GPU cache to free up memory
         self.model_instance.clear_gpu_cache()
 
-        # Unset more separation params to prevent accidentally re-using the wrong source files or output paths
+        # Unset separation parameters to prevent accidentally re-using the wrong source files or output paths
         self.model_instance.clear_file_specific_paths()
 
         # Remind the user one more time if they used a VIP model, so the message doesn't get lost in the logs
