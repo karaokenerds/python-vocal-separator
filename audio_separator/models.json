@@ -35,8 +35,17 @@
         "Roformer Model: MelBand Roformer Kim | FT by unwa": {
             "mel_band_roformer_kim_ft_unwa.ckpt": "config_mel_band_roformer_kim_ft_unwa.yaml"
         },
+        "Roformer Model: MelBand Roformer Kim | FT 2 by unwa": {
+            "mel_band_roformer_kim_ft2_unwa.ckpt": "config_mel_band_roformer_kim_ft_unwa.yaml"
+        },
         "Roformer Model: MelBand Roformer Kim | Inst V1 (E) by Unwa": {
             "melband_roformer_inst_v1e.ckpt": "config_melbandroformer_inst.yaml"
+        },
+        "Roformer Model: MelBand Roformer | Vocals by becruily": {
+            "mel_band_roformer_vocals_becruily.ckpt": "config_mel_band_roformer_vocals_becruily.yaml"
+        },
+        "Roformer Model: MelBand Roformer | Instrumental by becruily": {
+            "mel_band_roformer_instrumental_becruily.ckpt": "config_mel_band_roformer_instrumental_becruily.yaml"
         },
         "Roformer Model: MelBand Roformer | De-Reverb by anvuew": {
             "dereverb_mel_band_roformer_anvuew_sdr_19.1729.ckpt": "dereverb_mel_band_roformer_anvuew.yaml"
@@ -44,11 +53,20 @@
         "Roformer Model: MelBand Roformer | De-Reverb Less Aggressive by anvuew": {
             "dereverb_mel_band_roformer_less_aggressive_anvuew_sdr_18.8050.ckpt": "dereverb_mel_band_roformer_anvuew.yaml"
         },
+        "Roformer Model: MelBand Roformer | De-Reverb Big by Sucial": {
+            "dereverb_big_mbr_ep_362.ckpt": "config_dereverb_echo_mel_band_roformer_v2.yaml"
+        },
+        "Roformer Model: MelBand Roformer | De-Reverb Super Big by Sucial": {
+            "dereverb_super_big_mbr_ep_346.ckpt": "config_dereverb_echo_mel_band_roformer_v2.yaml"
+        },
         "Roformer Model: MelBand Roformer | De-Reverb-Echo by Sucial": {
             "dereverb-echo_mel_band_roformer_sdr_10.0169.ckpt": "config_dereverb-echo_mel_band_roformer.yaml"
         },
         "Roformer Model: MelBand Roformer | De-Reverb-Echo V2 by Sucial": {
             "dereverb-echo_mel_band_roformer_sdr_13.4843_v2.ckpt": "config_dereverb-echo_mel_band_roformer_sdr_13.4843_v2.yaml"
+        },
+        "Roformer Model: MelBand Roformer | De-Reverb-Echo Fused by Sucial": {
+            "dereverb_echo_mbr_fused.ckpt": "config_dereverb_echo_mel_band_roformer_v2.yaml"
         },
         "Roformer Model: MelBand Roformer Kim | SYHFT by SYH99999": {
             "MelBandRoformerSYHFT.ckpt": "config_vocals_mel_band_roformer_ft.yaml"
